@@ -13,7 +13,7 @@ struct ContentView: View {
         
         GeometryReader { geo in
             TabView {
-                QuoteView(vm:  ViewModel(), show: Constants.bbName)
+                FetchView(vm:  ViewModel(), show: Constants.bbName)
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
@@ -21,14 +21,14 @@ struct ContentView: View {
                     }
                 
                 
-                QuoteView(vm:  ViewModel(), show: Constants.bcsName)
+                FetchView(vm:  ViewModel(), show: Constants.bcsName)
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
                         Label(Constants.bcsName, systemImage: "briefcase")
                     }
                 
-                QuoteView(vm:  ViewModel(), show: Constants.ecName)
+                FetchView(vm:  ViewModel(), show: Constants.ecName)
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {

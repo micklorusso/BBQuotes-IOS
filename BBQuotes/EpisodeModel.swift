@@ -13,7 +13,7 @@ struct EpisodeModel: Codable {
     let episode: Int
     let writtenBy: String
     let directedBy: String
-    let airData: String
+    let airDate: String
     let image: URL
     
     var seasonEpisode: String {
