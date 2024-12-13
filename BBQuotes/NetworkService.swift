@@ -8,11 +8,11 @@
 import Foundation
 
 struct NetworkService {
-    enum NetworkError: Error {
+    private enum NetworkError: Error {
         case badResponse
     }
     
-    let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
+    private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     
     func fetchQuote(from show: String) async throws -> QuoteModel {
         let fetchURL = baseURL.appending(path: "quotes/random").appending(queryItems: [URLQueryItem(name: "production", value: show)])

@@ -9,22 +9,29 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        TabView {
-            Text("Breaking Bad View")
-                .toolbarBackground(.visible, for: .tabBar)
-                .tabItem {
-                    Label("Breaking Bad", systemImage: "tortoise")
-                }
-            
-            Text("Better Call Saul")
-                .toolbarBackground(.visible, for: .tabBar)
-                .tabItem {
-                    Label("Better Call Saul", systemImage: "briefcase")
-                }
+        
+        GeometryReader { geo in
+            TabView {
+                QuoteView(show: "Breaking Bad")
+                    .toolbarBackground(.black.opacity(0.5), for: .tabBar)
+                    .toolbarBackground(.visible, for: .tabBar)
+                    .tabItem {
+                        Label("Breaking Bad", systemImage: "tortoise")
+                    }
+                
+                
+                QuoteView(show: "Better Call Saul")
+                    .toolbarBackground(.black.opacity(0.5), for: .tabBar)
+                    .toolbarBackground(.visible, for: .tabBar)
+                    .tabItem {
+                        Label("Better Call Saul", systemImage: "briefcase")
+                    }
+            }.frame(width: geo.size.width, height: geo.size.height)
         }
     }
 }
 
 #Preview {
     ContentView()
+        .preferredColorScheme(.dark)
 }
