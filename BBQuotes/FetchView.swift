@@ -35,6 +35,8 @@ struct FetchView: View {
                             EpisodeView(episode: vm.episode)
                         case ViewModel.Status.successCharacter:
                             CharacterFrontView(character: vm.character, show: show)
+                        case .successQuoteSimpson:
+                            QuoteViewSimpson(quote: vm.simpsonQuote)
                         case .failure(let error):
                             Text(error.localizedDescription)
                                 .padding()

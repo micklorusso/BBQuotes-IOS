@@ -34,7 +34,7 @@ struct EpisodeView: View {
                     
                     Text("Directed by: \(episode.directedBy)")
                     Text("Aired: \(episode.airDate)")
-                }.frame(width: geo.size.width * 0.8, height: geo.size.height * 0.7)
+                }.frame(width: geo.size.width * 0.8, height: geo.size.height * 0.9)
                     .padding()
                     .background(.black.opacity(0.5))
                     .cornerRadius(25)

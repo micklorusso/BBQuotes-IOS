@@ -14,6 +14,7 @@ class ViewModel: ObservableObject {
         case successQuote
         case successEpisode
         case successCharacter
+        case successQuoteSimpson
     }
     
     @Published private(set) var status: Status = .initial
@@ -22,7 +23,10 @@ class ViewModel: ObservableObject {
     
     var quote: QuoteModel
     var character: CharacterModel
+    var simpsonQuote: SimpsonQuoteModel
     var episode: EpisodeModel
+    
+    var fetchQuoteCounter = 0
     
     init() {
         let decoder = JSONDecoder()
@@ -44,6 +48,9 @@ class ViewModel: ObservableObject {
             EpisodeModel.self, from: try! Data(contentsOf: Bundle.main.url(
                 forResource: "sampleepisode", withExtension: "json")!))
         
+        simpsonQuote = try! decoder.decode(
+            SimpsonQuoteModel.self, from: try! Data(contentsOf: Bundle.main.url(
+                forResource: "samplesimpsonquote", withExtension: "json")!))
     }
     
     func getQuoteData(for show: String, characterName: String? = nil) async {
@@ -52,13 +59,27 @@ class ViewModel: ObservableObject {
         }
 
         do {
-            quote = try await fetcher.fetchQuote(from: show, characterName: characterName)
-       
-            character = try await fetcher.fetchCharacter(quote.character)
-            character.death = try await fetcher.fetchDeath(for: quote.character)
-            DispatchQueue.main.async {
-                self.status = .successQuote
+            
+            if (fetchQuoteCounter < 4) {
+                quote = try await fetcher.fetchQuote(from: show, characterName: characterName)
+                
+                character = try await fetcher.fetchCharacter(quote.character)
+                character.death = try await fetcher.fetchDeath(for: quote.character)
+                DispatchQueue.main.async {
+                    self.status = .successQuote
+                }
+                fetchQuoteCounter += 1
+            } else {
+                fetchQuoteCounter = 0
+                
+                simpsonQuote = try await fetcher.fetchQuoteSimpson()
+                
+                DispatchQueue.main.async {
+                    self.status = .successQuoteSimpson
+                }
+
             }
+
         
         } catch {
             DispatchQueue.main.async {

@@ -78,8 +78,8 @@
             filePath = "BBQuotes/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
             landmarkName = "ViewModel"
             landmarkType = "3">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "BBQuotes/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "getRandomCharacter(for:)"
             landmarkType = "7">
          </BreakpointContent>

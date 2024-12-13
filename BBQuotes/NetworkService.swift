@@ -15,6 +15,8 @@ struct NetworkService {
     
     private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     
+    private let simpsonBaseURL = URL(string: "https://thesimpsonsquoteapi.glitch.me")!
+    
     func fetchQuote(from show: String, characterName: String? = nil) async throws -> QuoteModel {
         var fetchURL = baseURL.appending(path: "quotes/random")
         if characterName != nil {
@@ -24,6 +26,13 @@ struct NetworkService {
         }
         
         return try await fetch(with: fetchURL)
+    }
+    
+    func fetchQuoteSimpson() async throws -> SimpsonQuoteModel {
+        let fetchURL = simpsonBaseURL.appending(path: "quotes")
+        
+        let quoteList: [SimpsonQuoteModel] = try await fetch(with: fetchURL)
+        return quoteList[0]
     }
     
     func fetchCharacter(_ name: String) async throws -> CharacterModel {
