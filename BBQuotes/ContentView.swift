@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ViewModel()
     
     var body: some View {
         
         GeometryReader { geo in
             TabView {
-                QuoteView(vm: viewModel, show: "Breaking Bad")
+                QuoteView(vm:  ViewModel(), show: "Breaking Bad")
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
@@ -22,7 +21,7 @@ struct ContentView: View {
                     }
                 
                 
-                QuoteView(vm: viewModel, show: "Better Call Saul")
+                QuoteView(vm:  ViewModel(), show: "Better Call Saul")
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
