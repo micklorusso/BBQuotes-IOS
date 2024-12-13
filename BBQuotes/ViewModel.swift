@@ -6,8 +6,7 @@
 //
 import SwiftUI
 
-@Observable
-class ViewModel {
+class ViewModel: ObservableObject {
     enum Status {
         case initial
         case loading
@@ -15,7 +14,7 @@ class ViewModel {
         case success
     }
     
-    private(set) var status: Status = .initial
+    @Published private(set) var status: Status = .initial
     
     private let fetcher = NetworkService()
     
@@ -40,19 +39,25 @@ class ViewModel {
     }
     
     func getData(for show: String) async {
-        status = .loading
+        DispatchQueue.main.async {
+            self.status = .loading
+        }
+
         do {
             quote = try await fetcher.fetchQuote(from: show)
        
             character = try await fetcher.fetchCharacter(quote.character)
             character.death = try await fetcher.fetchDeath(for: quote.character)
-            status = .success
+            DispatchQueue.main.async {
+                self.status = .success
+            }
         
         } catch {
-            status = .failure(error: error)
+            DispatchQueue.main.async {
+                self.status = .failure(error: error)
+            }
         }
         
-        print(status)
     }
     
 }

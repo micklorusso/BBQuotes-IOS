@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct QuoteView: View {
-    let vm = ViewModel()
+    @ObservedObject var vm: ViewModel
     let show: String
     @State var showCharacterInfo = false
 
@@ -22,51 +22,56 @@ struct QuoteView: View {
                     )
 
                 VStack {
-                    
-                    switch vm.status {
-                    case .initial:
-                        EmptyView()
-                    case .loading:
-                        ProgressView()
-                    case .success:
-                        VStack {
-                            Text("\(vm.quote.quote)")
-                                .multilineTextAlignment(.center)
-                                .foregroundStyle(.white)
+                    VStack {
+                        Spacer(minLength: 65)
+                        
+                        switch vm.status {
+                        case ViewModel.Status.initial:
+                            EmptyView()
+                        case ViewModel.Status.loading:
+                            ProgressView()
+                        case ViewModel.Status.success:
+                            VStack {
+                                Text("\(vm.quote.quote)")
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background(.black.opacity(0.5))
+                                    .clipShape(.rect(cornerRadius: 25))
+                                    .minimumScaleFactor(0.5)
+                                ZStack(alignment: .bottom) {
+                                    AsyncImage(url: vm.character.images[0]) {
+                                        image in
+                                        image.resizable()
+                                            .scaledToFill()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .frame(
+                                        width: geo.size.width * 0.9,
+                                        height: geo.size.height * 0.6)
+                                    
+                                    Text(vm.character.name).foregroundStyle(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(.ultraThinMaterial)
+                                }
+                                .clipShape(.rect(cornerRadius: 50))
+                                .onTapGesture {
+                                    showCharacterInfo.toggle()
+                                    
+                                }
+                            }.frame(width: geo.size.width * 0.9)
+                        case .failure(let error):
+                            Text(error.localizedDescription)
                                 .padding()
                                 .background(.black.opacity(0.5))
                                 .clipShape(.rect(cornerRadius: 25))
-                                .minimumScaleFactor(0.5)
-                            ZStack(alignment: .bottom) {
-                                AsyncImage(url: vm.character.images[0]) {
-                                    image in
-                                    image.resizable()
-                                        .scaledToFill()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(
-                                    width: geo.size.width * 0.9,
-                                height: geo.size.height * 0.6)
-                                
-                                Text(vm.character.name).foregroundStyle(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(.ultraThinMaterial)
-                            }
-                            .clipShape(.rect(cornerRadius: 50))
-                            .onTapGesture {
-                                showCharacterInfo.toggle()
-                                
-                            }
-                        }.frame(width: geo.size.width * 0.9)
-                    case .failure(let error):
-                        Text(error.localizedDescription)
-                            .padding()
-                            .background(.black.opacity(0.5))
-                            .clipShape(.rect(cornerRadius: 25))
+                        }
+                        
+                        Spacer()
                     }
-                    
+
                     Button {
                         Task {
                             await vm.getData(for: show)
@@ -90,7 +95,9 @@ struct QuoteView: View {
                                     : "BetterCallSaulShadow"), radius: 2)
                     }
                     
-                }
+                    Spacer(minLength: 90)
+
+                }.frame(width: geo.size.width, height: geo.size.height)
             }.frame(width: geo.size.width, height: geo.size.height)
         }.ignoresSafeArea()
             .sheet(isPresented: $showCharacterInfo) {
@@ -100,6 +107,6 @@ struct QuoteView: View {
 }
 
 #Preview {
-    QuoteView(show: "Breaking Bad")
+    QuoteView(vm: ViewModel(), show: "Breaking Bad")
         .preferredColorScheme(.dark)
 }
