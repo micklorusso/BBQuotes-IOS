@@ -8,8 +8,9 @@
 import Foundation
 
 struct NetworkService {
-    private enum NetworkError: Error {
+    enum NetworkError: Error {
         case badResponse
+        case emptyEpisodesList
     }
     
     private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
@@ -38,6 +39,13 @@ struct NetworkService {
         }
         
         return nil
+    }
+    
+    func fetchEpisode(from show: String) async throws -> EpisodeModel? {
+        let fetchURL = baseURL.appending(path: "episodes").appending(queryItems: [URLQueryItem(name: "production", value: show)])
+        
+        let episodes: [EpisodeModel] = try await fetch(with: fetchURL)
+        return episodes.randomElement()
     }
     
     

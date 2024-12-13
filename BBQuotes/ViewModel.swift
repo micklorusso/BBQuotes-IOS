@@ -20,6 +20,7 @@ class ViewModel: ObservableObject {
     
     var quote: QuoteModel
     var character: CharacterModel
+    var episode: EpisodeModel
     
     init() {
         let decoder = JSONDecoder()
@@ -36,9 +37,14 @@ class ViewModel: ObservableObject {
                 forResource: "sampledeath", withExtension: "json")!))
         
         character.death = death
+        
+        episode = try! decoder.decode(
+            EpisodeModel.self, from: try! Data(contentsOf: Bundle.main.url(
+                forResource: "sampleepisode", withExtension: "json")!))
+        
     }
     
-    func getData(for show: String) async {
+    func getQuoteData(for show: String) async {
         DispatchQueue.main.async {
             self.status = .loading
         }
@@ -58,6 +64,30 @@ class ViewModel: ObservableObject {
             }
         }
         
+    }
+    
+    func getEpisodeData(for show: String) async {
+        DispatchQueue.main.async {
+            self.status = .loading
+        }
+        
+        do {
+            if let unwrappedEpisode = try await fetcher.fetchEpisode(from: show) {
+                episode = unwrappedEpisode
+                
+                DispatchQueue.main.async {
+                    self.status = .success
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.status = .failure(error: NetworkService.NetworkError.emptyEpisodesList)
+                }
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.status = .failure(error: error)
+            }
+        }
     }
     
 }

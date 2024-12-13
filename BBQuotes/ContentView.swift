@@ -13,22 +13,29 @@ struct ContentView: View {
         
         GeometryReader { geo in
             TabView {
-                QuoteView(vm:  ViewModel(), show: "Breaking Bad")
+                QuoteView(vm:  ViewModel(), show: Constants.bbName)
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
-                        Label("Breaking Bad", systemImage: "tortoise")
+                        Label(Constants.bbName, systemImage: "tortoise")
                     }
                 
                 
-                QuoteView(vm:  ViewModel(), show: "Better Call Saul")
+                QuoteView(vm:  ViewModel(), show: Constants.bcsName)
                     .toolbarBackground(.black.opacity(0.5), for: .tabBar)
                     .toolbarBackground(.visible, for: .tabBar)
                     .tabItem {
-                        Label("Better Call Saul", systemImage: "briefcase")
+                        Label(Constants.bcsName, systemImage: "briefcase")
+                    }
+                
+                QuoteView(vm:  ViewModel(), show: Constants.ecName)
+                    .toolbarBackground(.black.opacity(0.5), for: .tabBar)
+                    .toolbarBackground(.visible, for: .tabBar)
+                    .tabItem {
+                        Label(Constants.ecName, systemImage: "car")
                     }
             }.frame(width: geo.size.width, height: geo.size.height)
-        }
+        }.preferredColorScheme(.dark)
     }
 }
 
