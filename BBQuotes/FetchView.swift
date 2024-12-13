@@ -29,8 +29,10 @@ struct FetchView: View {
                             EmptyView()
                         case ViewModel.Status.loading:
                             ProgressView()
-                        case ViewModel.Status.success:
-                            QuoteView(quote: vm.quote, character: vm.character, show: show).frame(width: geo.size.width * 0.8, height: geo.size.height * 0.7)
+                        case ViewModel.Status.successQuote:
+                            QuoteView(quote: vm.quote, character: vm.character, show: show)
+                        case ViewModel.Status.successEpisode:
+                            EpisodeView(episode: vm.episode)
                         case .failure(let error):
                             Text(error.localizedDescription)
                                 .padding()
@@ -41,21 +43,45 @@ struct FetchView: View {
                         Spacer()
                     }
 
-                    Button {
-                        Task {
-                            await vm.getQuoteData(for: show)
+                    HStack(alignment: .center) {
+                        Spacer()
+                        
+                        Button {
+                            Task {
+                                await vm.getQuoteData(for: show)
+                            }
+                        } label: {
+                            Text("Get Random Quote")
+                                .font(.title2)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(
+                                    Color("\(show.removeSpaces())Button")
+                                )
+                                .clipShape(.rect(cornerRadius: 12))
+                                .shadow(
+                                    color: Color("\(show.removeSpaces())Shadow"), radius: 2)
                         }
-                    } label: {
-                        Text("Get Random Quote")
-                            .font(.title)
-                            .foregroundStyle(.white)
-                            .padding()
-                            .background(
-                                Color("\(show.removeSpaces())Button")
-                            )
-                            .clipShape(.rect(cornerRadius: 12))
-                            .shadow(
-                                color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                        
+                        Spacer()
+                        
+                        Button {
+                            Task {
+                                await vm.getEpisodeData(for: show)
+                            }
+                        } label: {
+                            Text("Get Random Episode")
+                                .font(.title2)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(
+                                    Color("\(show.removeSpaces())Button")
+                                )
+                                .clipShape(.rect(cornerRadius: 12))
+                                .shadow(
+                                    color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                        }
+                        Spacer()
                     }
                     
                     Spacer(minLength: 90)

@@ -11,7 +11,8 @@ class ViewModel: ObservableObject {
         case initial
         case loading
         case failure(error: Error)
-        case success
+        case successQuote
+        case successEpisode
     }
     
     @Published private(set) var status: Status = .initial
@@ -55,7 +56,7 @@ class ViewModel: ObservableObject {
             character = try await fetcher.fetchCharacter(quote.character)
             character.death = try await fetcher.fetchDeath(for: quote.character)
             DispatchQueue.main.async {
-                self.status = .success
+                self.status = .successQuote
             }
         
         } catch {
@@ -76,7 +77,7 @@ class ViewModel: ObservableObject {
                 episode = unwrappedEpisode
                 
                 DispatchQueue.main.async {
-                    self.status = .success
+                    self.status = .successEpisode
                 }
             } else {
                 DispatchQueue.main.async {
