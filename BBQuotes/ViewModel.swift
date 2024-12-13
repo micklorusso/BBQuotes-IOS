@@ -46,13 +46,13 @@ class ViewModel: ObservableObject {
         
     }
     
-    func getQuoteData(for show: String) async {
+    func getQuoteData(for show: String, characterName: String? = nil) async {
         DispatchQueue.main.async {
             self.status = .loading
         }
 
         do {
-            quote = try await fetcher.fetchQuote(from: show)
+            quote = try await fetcher.fetchQuote(from: show, characterName: characterName)
        
             character = try await fetcher.fetchCharacter(quote.character)
             character.death = try await fetcher.fetchDeath(for: quote.character)
@@ -101,7 +101,7 @@ class ViewModel: ObservableObject {
         do {
             var characterForProductionFound = false
             while !characterForProductionFound {
-                let character = try await fetcher.fetchRandomCharacter()
+                character = try await fetcher.fetchRandomCharacter()
                 if character.productions.contains(show) {
                     characterForProductionFound = true
                 }

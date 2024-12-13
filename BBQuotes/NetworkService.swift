@@ -15,8 +15,13 @@ struct NetworkService {
     
     private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     
-    func fetchQuote(from show: String) async throws -> QuoteModel {
-        let fetchURL = baseURL.appending(path: "quotes/random").appending(queryItems: [URLQueryItem(name: "production", value: show)])
+    func fetchQuote(from show: String, characterName: String? = nil) async throws -> QuoteModel {
+        var fetchURL = baseURL.appending(path: "quotes/random")
+        if characterName != nil {
+            fetchURL = fetchURL.appending(queryItems: [URLQueryItem(name: "character", value: characterName)])
+        } else {
+            fetchURL = fetchURL.appending(queryItems: [URLQueryItem(name: "production", value: show)])
+        }
         
         return try await fetch(with: fetchURL)
     }

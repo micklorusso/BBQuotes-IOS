@@ -68,7 +68,7 @@ struct FetchView: View {
                         
                         Button {
                             Task {
-                                await vm.getQuoteData(for: show)
+                                await vm.getQuoteData(for: show, characterName: vm.character.name)
                             }
                         } label: {
                             ButtonLabel(show: show, text: "Get another Quote")
