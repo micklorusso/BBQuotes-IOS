@@ -89,7 +89,11 @@ struct FetchView: View {
                 }.frame(width: geo.size.width, height: geo.size.height)
             }.frame(width: geo.size.width, height: geo.size.height)
         }.ignoresSafeArea()
-            
+            .onAppear {
+                Task {
+                    await vm.getQuoteData(for: show)
+                }
+            }
     }
 }
 

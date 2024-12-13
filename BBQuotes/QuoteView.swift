@@ -25,7 +25,7 @@ struct QuoteView: View {
                         .clipShape(.rect(cornerRadius: 25))
                         .minimumScaleFactor(0.5)
                     ZStack(alignment: .bottom) {
-                        AsyncImage(url: character.images[0]) {
+                        AsyncImage(url: character.images.randomElement()) {
                             image in
                             image.resizable()
                                 .scaledToFill()
