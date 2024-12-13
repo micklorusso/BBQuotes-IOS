@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CharacterView: View {
+struct CharacterDetailView: View {
     var character: CharacterModel
     var show: String
 
@@ -113,6 +113,6 @@ struct CharacterView: View {
 }
 
 #Preview {
-    CharacterView(character: ViewModel().character, show: Constants.bbName)
+    CharacterDetailView(character: ViewModel().character, show: Constants.bbName)
         .preferredColorScheme(.dark)
 }

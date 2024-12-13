@@ -13,6 +13,7 @@ class ViewModel: ObservableObject {
         case failure(error: Error)
         case successQuote
         case successEpisode
+        case successCharacter
     }
     
     @Published private(set) var status: Status = .initial
@@ -91,4 +92,27 @@ class ViewModel: ObservableObject {
         }
     }
     
+    
+    func getRandomCharacter(for show: String) async {
+        DispatchQueue.main.async {
+            self.status = .loading
+        }
+        
+        do {
+            var characterForProductionFound = false
+            while !characterForProductionFound {
+                let character = try await fetcher.fetchRandomCharacter()
+                if character.productions.contains(show) {
+                    characterForProductionFound = true
+                }
+            }
+            DispatchQueue.main.async {
+                self.status = .successCharacter
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.status = .failure(error: error)
+            }
+        }
+    }
 }

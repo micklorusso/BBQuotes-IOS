@@ -28,6 +28,12 @@ struct NetworkService {
         return characterList[0]
     }
     
+    func fetchRandomCharacter() async throws -> CharacterModel {
+        let fetchURL = baseURL.appending(path: "characters/random")
+        
+        return try await fetch(with: fetchURL)
+    }
+    
     func fetchDeath(for character: String) async throws -> DeathModel? {
         let fetchURL = baseURL.appending(path: "deaths")
         let deaths: [DeathModel] = try await fetch(with: fetchURL)

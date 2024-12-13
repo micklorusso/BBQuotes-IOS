@@ -16,4 +16,5 @@ struct CharacterModel: Codable {
     let status: String
     let portrayedBy: String
     var death: DeathModel?
+    let productions: [String]
 }

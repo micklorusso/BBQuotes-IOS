@@ -33,6 +33,8 @@ struct FetchView: View {
                             QuoteView(quote: vm.quote, character: vm.character, show: show)
                         case ViewModel.Status.successEpisode:
                             EpisodeView(episode: vm.episode)
+                        case ViewModel.Status.successCharacter:
+                            CharacterFrontView(character: vm.character, show: show)
                         case .failure(let error):
                             Text(error.localizedDescription)
                                 .padding()
@@ -43,46 +45,44 @@ struct FetchView: View {
                         Spacer()
                     }
 
-                    HStack(alignment: .center) {
-                        Spacer()
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 5),
+                        GridItem(.flexible(), spacing: 5)
+                    ], spacing: 5) {
                         
                         Button {
                             Task {
                                 await vm.getQuoteData(for: show)
                             }
                         } label: {
-                            Text("Get Random Quote")
-                                .font(.title2)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .background(
-                                    Color("\(show.removeSpaces())Button")
-                                )
-                                .clipShape(.rect(cornerRadius: 12))
-                                .shadow(
-                                    color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                            ButtonLabel(show: show, text: "Get Random Quote")
                         }
-                        
-                        Spacer()
                         
                         Button {
                             Task {
                                 await vm.getEpisodeData(for: show)
                             }
                         } label: {
-                            Text("Get Random Episode")
-                                .font(.title2)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .background(
-                                    Color("\(show.removeSpaces())Button")
-                                )
-                                .clipShape(.rect(cornerRadius: 12))
-                                .shadow(
-                                    color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                            ButtonLabel(show: show, text: "Get Random Episode")
                         }
-                        Spacer()
+                        
+                        Button {
+                            Task {
+                                await vm.getQuoteData(for: show)
+                            }
+                        } label: {
+                            ButtonLabel(show: show, text: "Get another Quote")
+                        }
+                        
+                        Button {
+                            Task {
+                                await vm.getRandomCharacter(for: show)
+                            }
+                        } label: {
+                            ButtonLabel(show: show, text: "Get Random Character")
+                        }
                     }
+                    .padding()
                     
                     Spacer(minLength: 90)
 
